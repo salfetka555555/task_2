@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <ul>
+        <li>
+            <a href="#" onclick="toggleMenu(event)">Меню 1</a>
+            <ul>
+                <li><a href="#" onclick="toggleMenu(event)">Подменю 1.1</a></li>
+                <li>
+                    <a href="#" onclick="toggleMenu(event)">Подменю 1.2</a>
+                    <ul>
+                        <li><a href="#" onclick="toggleMenu(event)">Подменю 1.2.1</a></li>
+                        <li><a href="#" onclick="toggleMenu(event)">Подменю 1.2.2</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="#" onclick="toggleMenu(event)">Меню 2</a>
+            <ul>
+                <li><a href="#" onclick="toggleMenu(event)">Подменю 2.1</a></li>
+                <li>
+                    <a href="#" onclick="toggleMenu(event)">Подменю 2.2</a>
+                    <ul>
+                        <li><a href="#" onclick="toggleMenu(event)">Подменю 2.2.1</a></li>
+                        <li><a href="#" onclick="toggleMenu(event)">Подменю 2.2.2</a></li>
+                        <li>
+                            <a href="#" onclick="toggleMenu(event)">Подменю 2.2.3</a>
+                            <ul>
+                                <li><a href="#" onclick="toggleMenu(event)">Подменю 2.2.3.1</a></li>
+                                <li><a href="#" onclick="toggleMenu(event)">Подменю 2.2.3.2</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+    <script>
+        function toggleMenu(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            
+            const link = event.target;
+            const parentLi = link.parentElement;
+            const submenu = parentLi.querySelector('ul');
+            
+            if (submenu) {
+                const isVisible = submenu.style.display === 'block';
+                closeAllMenusAtLevel(submenu);
+                submenu.style.display = isVisible ? 'none' : 'block';
+            } else {
+                closeAllMenus();
+            }
+        }
+        
+        function closeAllMenusAtLevel(currentMenu) {
+            // Закрываем только меню на том же уровне
+            const parentUl = currentMenu.parentElement.parentElement;
+            if (parentUl) {
+                parentUl.querySelectorAll('ul').forEach(menu => {
+                    if (menu !== currentMenu) {
+                        menu.style.display = 'none';
+                    }
+                });
+            }
+        }
+        
+        function closeAllMenus() {
+            document.querySelectorAll('ul ul').forEach(menu => {
+                menu.style.display = 'none';
+            });
+        }
+        
+        document.addEventListener('click', closeAllMenus);
+    </script>
+</body>
+</html>
